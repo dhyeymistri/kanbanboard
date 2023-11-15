@@ -143,29 +143,6 @@ function App() {
   const [sortType, setSortType] = useState("");
   const [index, setIndex] = useState(0);
 
-
-
-
-  // const fetchUrl = () =>{
-  //   return fetch(url)
-  //   .then((res) => res.json())
-  //   .then((d) => setData(d))
-  // }
-
-  // function sortResult(prop){
-  //   ticketData.sort((a,b) => {
-  //     if(prop === "title"){
-  //       const t1 = a[prop].toUpperCase();
-  //       const t2 = b[prop].toUpperCase();
-  //       if(t1 < t2) return -1;
-  //     } else if(prop === "priority"){
-  //       if(a[prop]<b[prop]) return -1;
-  //     }
-  //     return 0;
-  //   });    
-  //   console.log(ticketData);
-  // }
-
   const sortedTickets = ticketData.sort((a,b) => {
     if(sortType === "title"){
       const t1 = a[sortType].toUpperCase();
@@ -218,26 +195,26 @@ function App() {
   )
 
   useEffect(() => {
-    // const fetchData = async()=>{
-    //   try{
-    //     const res = await fetch('./data.json');
-    //     const jsonData = await res.json();
-    //     setData(jsonData);
-    //   } catch (error) {
-    //     console.log('Error fetching data',error);
-    //   }
-    // };
-    // fetchData();
+    const fetchData = async()=>{
+      try{
+        const res = await fetch(url);
+        const jsonData = await res.json();
+        setData(jsonData);
+      } catch (error) {
+        console.log('Error fetching data',error);
+      }
+    };
+    fetchData();
     setTicketData(data?.tickets);
     setUserData(data?.users);
     console.log(data);
   }, []);
 
-  const card1 = ["Backlog", UserData[0].name, "No Priority"];
-  const card2 = ["To do", UserData[1].name, "Urgent"];
-  const card3 = ["In Progress", UserData[2].name, "High"];
-  const card4 = ["Done", UserData[3].name, "Medium"];
-  const card5 = ["Canceled", UserData[4].name, "Low"];
+  const card1 = ["Backlog", UserData[0]?.name, "No Priority"];
+  const card2 = ["To do", UserData[1]?.name, "Urgent"];
+  const card3 = ["In Progress", UserData[2]?.name, "High"];
+  const card4 = ["Done", UserData[3]?.name, "Medium"];
+  const card5 = ["Canceled", UserData[4]?.name, "Low"];
   // const grouping = {
   //   "groups":[
   //     {
@@ -277,34 +254,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <div className="dropdown-bar">
-          <button onClick={()=>setIndex(0)}>Group by Status</button>
-          <button onClick={()=>setIndex(2)}>Group by Priority</button>
-          <button onClick={()=>setIndex(1)}>Group by Name</button>
-          <button onClick={()=>setSortType("priority")}>Order by Priority</button>
-          <button onClick={()=>setSortType("title")}>Order by Title</button>
-        </div> */}
         <div className="hideable">
           <div className="grouping">
             <div>Grouping</div>
-            {/* <select
-              onChange={(e)=>setting(e.target.value)}
-              value={index || 'Status'}
-            >
-              {grouping.groups.map((groupby)=><option key={groupby.id} value={groupby.id}>{groupby.text}</option>)}
-            </select> */}
             <button onClick={()=>setIndex(0)}>Status</button>
           <button onClick={()=>setIndex(2)}>Priority</button>
           <button onClick={()=>setIndex(1)}>Name</button>
           </div>
           <div className="ordering">
           <div>Ordering</div>
-            {/* <select
-              onChange={(e)=>setSortType(e.target.value)}
-              value={index || 'Priority'}
-            >
-              {grouping.sorts.map((groupby)=><option key={groupby.id} value={groupby.work}>{groupby.text}</option>)}
-            </select> */}
             <button onClick={()=>setSortType("priority")}>Priority</button>
           <button onClick={()=>setSortType("title")}>Title</button>
           </div>
@@ -316,14 +274,6 @@ function App() {
           <ContainerCard groupby={card4[index]} data={fourthData}/>
           <ContainerCard groupby={card5[index]} data={fifthData}/>
         </div>
-          {/* {sortedTickets.map((ticket, i) => (
-            <Card
-              key = {ticket.id}
-              id = {ticket.id}
-              tag = {ticket.tag[0]}
-              title = {ticket.title}
-            />
-          ))} */}
       </header>
     </div>
   )
